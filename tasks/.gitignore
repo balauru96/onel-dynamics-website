@@ -1,0 +1,5 @@
+# Runtime artifacts of the task runner. Keep the queue and this README tracked.
+.runner.lock
+PAUSED
+logs/*.log
+state/*.json

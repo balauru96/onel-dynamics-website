@@ -1,0 +1,35 @@
+[Unit]
+Description=Onel-Dynamics website agent task runner (approved queue)
+Documentation=file:/home/onel/Desktop/Onel-Dynamics-Website/tasks/queue/README.md
+# Only ever runs while the user session is active (Linger is off, so user
+# units stop at logout). It will not run overnight or while logged out.
+ConditionUser=onel
+ConditionPathExists=/home/onel/Desktop/Onel-Dynamics-Website/tasks/runner.sh
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/onel/Desktop/Onel-Dynamics-Website
+ExecStart=/home/onel/Desktop/Onel-Dynamics-Website/tasks/runner.sh
+
+# The runner enforces its own 45 minute per-task limit with `timeout`.
+# This is the outer safety net for the whole unit.
+TimeoutStartSec=3000
+
+# opencode lives in ~/.opencode/bin. Set PATH explicitly: user units do not
+# inherit the login shell's PATH.
+#
+# node comes from nvm, NOT /usr/bin/node. /usr/bin/node is v18 and Playwright
+# needs v20+, so the nvm bin directory must come first. If you upgrade Node,
+# update this one path (the version number is part of it).
+Environment=HOME=/home/onel
+Environment=USER=onel
+Environment=PATH=/home/onel/.nvm/versions/node/v24.18.0/bin:/home/onel/.opencode/bin:/usr/local/bin:/usr/bin:/bin
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+
+# Be a good laptop citizen: low priority, idle IO. Never wake the machine.
+Nice=10
+IOSchedulingClass=idle
+
+# No service-level sandboxing that would break opencode's own file use.
+# The hard boundary is opencode.json's permissions plus the runner's scope.
+NoNewPrivileges=yes
