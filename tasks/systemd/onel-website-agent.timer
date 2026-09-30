@@ -1,0 +1,17 @@
+[Unit]
+Description=Check the Onel-Dynamics website task queue every 30 minutes
+Documentation=file:/home/onel/Desktop/Onel-Dynamics-Website/tasks/queue/README.md
+
+[Timer]
+# Fires 30 min after the user manager starts, then every 30 minutes of wall
+# time. No Persistent= line on purpose: missed runs are NOT replayed in a
+# burst when the laptop wakes or you log back in.
+OnBootSec=2min
+OnUnitActiveSec=30min
+AccuracySec=1min
+# Do not wake a suspended laptop to run this.
+WakeSystem=false
+Unit=onel-website-agent.service
+
+[Install]
+WantedBy=timers.target
