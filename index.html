@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Onel-Dynamics — Drone mission orchestration, from planning to inspection reports</title>
+    <meta name="description"
+      content="Onel-Dynamics is developing DroneOS to coordinate drone missions, process data locally and turn inspection workflows into traceable reports — starting with solar panel inspection." />
+    <meta name="theme-color" content="#050a12" />
+
+    <!-- Typeface -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&family=Inter:wght@400;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <!-- Favicon (SVG, self-contained) -->
+    <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Header -->
+    <header class="header" id="top">
+      <div class="shell header__inner">
+        <a class="brand" href="#top" aria-label="Onel-Dynamics home">
+          <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="m" x1="2" y1="2" x2="22" y2="22"
+                gradientUnits="userSpaceOnUse">
+                <stop stop-color="#3ed0e4" />
+                <stop offset="1" stop-color="#7fe9f3" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M3 18h5V6H3v12zm8 0h5v-4h-5v4zm0-8h5V6h-5v6zm8 8h2V6h-2v12z"
+              fill="url(#m)" opacity=".95" />
+            <circle cx="19.5" cy="11.5" r="1.25" fill="#86e4f1" />
+          </svg>
+          <div class="brand__text">
+            <span class="brand__name">Onel<span>-</span>Dynamics</span>
+            <span class="brand__sub">Industrial Autonomy</span>
+          </div>
+        </a>
+
+        <nav class="nav" id="nav">
+          <ul class="nav__list">
+            <li><a class="nav__link" href="#about">About</a></li>
+            <li><a class="nav__link" href="#problem">Platform</a></li>
+            <li><a class="nav__link" href="#workflow">Workflow</a></li>
+            <li><a class="nav__link" href="#architecture">Architecture</a></li>
+            <li><a class="nav__link" href="#usecase">Solar Inspections</a></li>
+            <li><a class="nav__link" href="#status">Status & Vision</a></li>
+            <li><a class="nav__link" href="#contact">Contact</a></li>
+          </ul>
+          <a class="nav__cta" href="#status">Development Status</a>
+        </nav>
+
+        <button class="nav-toggle" id="navToggle" aria-expanded="false"
+          aria-controls="nav">
+          <span class="visually-hidden">Toggle navigation</span>
+          <div class="nav-toggle__bars">
+            <span></span><span></span><span></span>
+          </div>
+          <span>Menu</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- 1. Hero / Introduction -->
+      <section class="hero section--flush" id="about">
+        <div class="shell hero__grid">
+          <div class="reveal">
+            <p class="eyebrow">
+              <span class="eyebrow__num">01</span>
+              Onel-Dynamics
+            </p>
+            <h1 class="hero__title">
+              Drone mission orchestration. From planning to inspection
+              reports.
+            </h1>
+            <p class="hero__lede">
+              Onel-Dynamics is developing <strong>DroneOS</strong> to
+              coordinate drone missions, process data locally, and turn
+              inspection workflows into traceable reports—starting with solar
+              inspections.
+            </p>
+
+            <p class="hero__status">
+              <span class="hero__status-dot"></span>
+              Under development · Validated in simulation
+            </p>
+
+            <div class="hero__actions">
+              <a href="#workflow" class="btn btn--primary">
+                See the mission workflow
+                <svg class="btn__arrow" viewBox="0 0 16 16"
+                  aria-hidden="true">
+                  <path
+                    d="M6 3l5 5-5 5M11 8H1"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.25"
+                    stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </a>
+              <a href="#architecture" class="btn btn--ghost">
+                View system architecture
+                <svg class="btn__arrow" viewBox="0 0 16 16"
+                  aria-hidden="true">
+                  <path
+                    d="M6 3l5 5-5 5M11 8H1"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.25"
+                    stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+
+            <dl class="hero__meta">
+              <div>
+                <dt>Product</dt>
+                <dd>DroneOS</dd>
+              </div>
+              <div>
+                <dt>Flight authority</dt>
+                <dd>PX4 Autopilot</dd>
+              </div>
+              <div>
+                <dt>Primary field compute</dt>
+                <dd>NVIDIA Jetson Orin Nano</dd>
+              </div>
+              <div>
+                <dt>Execution model</dt>
+                <dd>Local-first • Edge-first</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="hero__figure reveal" data-d="80">
+            <div class="hero__figure-head">
+              <span>System outline</span>
+              <span>DroneOS • PX4 • Field Box</span>
+            </div>
+            <div class="hero__figure-body">
+              <svg viewBox="0 0 600 300" role="img"
+                aria-labelledby="sysTitle sysDesc">
+                <title id="sysTitle">How DroneOS fits together</title>
+                <desc id="sysDesc">The operator plans and approves missions on
+                  the Jetson Field Box, where DroneOS runs locally. DroneOS
+                  sends validated commands to the PX4 autopilot, which keeps
+                  flight authority. Telemetry and reports return to the
+                  operator.</desc>
+                <rect x="8" y="8" width="584" height="284" rx="12"
+                  fill="#070e18" stroke="rgba(146,180,216,.16)" />
+
+                <!-- Row 1: operator -> DroneOS -> PX4 -->
+                <rect x="34" y="44" width="164" height="88" rx="8"
+                  fill="#0f1f30" stroke="rgba(146,180,216,.24)" />
+                <text x="116" y="78" text-anchor="middle"
+                  font-family="Archivo, Inter, sans-serif" font-size="19"
+                  font-weight="600" fill="#e8f0f8">Operator</text>
+                <text x="116" y="104" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="14"
+                  fill="#a3b5c8">Plans and approves</text>
+
+                <line x1="204" y1="88" x2="248" y2="88"
+                  stroke="#3ed0e4" stroke-width="2" />
+                <polygon points="244,82 258,88 244,94" fill="#3ed0e4" />
+
+                <rect x="264" y="30" width="176" height="116" rx="8"
+                  fill="#0f1f30" stroke="#3ed0e4" stroke-width="1.5" />
+                <text x="352" y="64" text-anchor="middle"
+                  font-family="Archivo, Inter, sans-serif" font-size="21"
+                  font-weight="600" fill="#e8f0f8">DroneOS</text>
+                <text x="352" y="90" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="14"
+                  fill="#a3b5c8">Plans, processes,</text>
+                <text x="352" y="112" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="14"
+                  fill="#a3b5c8">reports — all local</text>
+
+                <line x1="446" y1="88" x2="490" y2="88"
+                  stroke="#e3a85c" stroke-width="2" />
+                <polygon points="486,82 500,88 486,94" fill="#e3a85c" />
+
+                <rect x="506" y="44" width="60" height="88" rx="8"
+                  fill="#101824" stroke="rgba(227,168,92,.5)" />
+                <text x="536" y="82" text-anchor="middle"
+                  font-family="Archivo, Inter, sans-serif" font-size="19"
+                  font-weight="600" fill="#e8f0f8">PX4</text>
+                <text x="536" y="106" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="12"
+                  fill="#a3b5c8">Flies the</text>
+                <text x="536" y="122" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="12"
+                  fill="#a3b5c8">drone</text>
+
+                <!-- Flight authority marker -->
+                <text x="536" y="152" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="12"
+                  font-weight="600" fill="#e3a85c">Flight authority</text>
+
+                <!-- Return path -->
+                <path d="M536 172 v 34 H 116 V 140" fill="none"
+                  stroke="rgba(146,180,216,.34)" stroke-width="1.5"
+                  stroke-dasharray="5 5" />
+                <polygon points="110,146 116,132 122,146" fill="#a3b5c8" />
+                <text x="326" y="196" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="14"
+                  fill="#a3b5c8">Live telemetry, mission state and inspection
+                  reports</text>
+
+                <!-- Field Box band -->
+                <rect x="34" y="222" width="532" height="50" rx="8"
+                  fill="rgba(62,208,228,.05)"
+                  stroke="rgba(62,208,228,.28)" />
+                <text x="300" y="245" text-anchor="middle"
+                  font-family="Archivo, Inter, sans-serif" font-size="16"
+                  font-weight="600" fill="#86e4f1">Jetson Field Box</text>
+                <text x="300" y="264" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">One box on site — planning, data processing and
+                  reporting, without an internet connection</text>
+              </svg>
+            </div>
+            <div class="hero__figure-foot">
+              <div>PX4 keeps flight control</div>
+              <div>A person approves each mission</div>
+              <div>Data stays on site</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Platform / Problem -->
+      <section class="section" id="problem">
+        <div class="shell">
+          <div class="split">
+            <div class="reveal">
+              <p class="eyebrow"><span class="eyebrow__num">02</span> The
+                platform</p>
+              <h2>From flight planning to inspection reports.</h2>
+              <p class="lede">
+                DroneOS ties the whole job together: plan a mission, fly it,
+                bring the data home, work out what it shows, and produce a
+                report someone can act on. PX4 still flies the drone.
+              </p>
+              <div class="callout u-mt-md">
+                <p>
+                  <strong>Everything runs on site.</strong> Planning, data
+                  processing and reporting happen on a single box next to the
+                  array, so a mission does not depend on an internet connection
+                  being available.
+                </p>
+              </div>
+            </div>
+
+            <div class="reveal" data-d="80">
+              <ul class="benefit-list">
+                <li>
+                  <b>One system, not five tools</b>
+                  <span>Flight, data transfer, analysis, approval and reporting
+                    live in the same workflow, so nothing is lost between
+                    vendors or exports.</span>
+                </li>
+                <li>
+                  <b>Works without a connection</b>
+                  <span>Captured data is processed on site. Unreliable links
+                    stop being a scheduling problem.</span>
+                </li>
+                <li>
+                  <b>A person decides</b>
+                  <span>The system proposes an inspection route; an operator
+                    reviews and approves it before anything is flown.</span>
+                </li>
+                <li>
+                  <b>Reports you can trace back</b>
+                  <span>Each finding links to the exact image it came from and
+                    the mission it came from.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="u-mt-xl">
+            <div class="section-head section-head--tight reveal">
+              <p class="eyebrow eyebrow--tight"><span class="eyebrow__num">02.1
+                </span> What you get</p>
+              <h3>Four things DroneOS does for you</h3>
+            </div>
+
+            <div class="grid grid--2 reveal">
+              <article class="card">
+                <p class="card__index">01</p>
+                <h3>Plan and fly the mission</h3>
+                <p>
+                  Build a route over the asset, watch it in real time, and
+                  follow progress while it flies.
+                </p>
+              </article>
+
+              <article class="card">
+                <p class="card__index">02</p>
+                <h3>Bring the data home safely</h3>
+                <p>
+                  After landing, captured data is transferred to the Field Box
+                  and checked before anything is analysed.
+                </p>
+              </article>
+
+              <article class="card">
+                <p class="card__index">03</p>
+                <h3>Analyse and propose</h3>
+                <p>
+                  The system turns the captured data into a proposed inspection
+                  route, ready for a person to review.
+                </p>
+              </article>
+
+              <article class="card">
+                <p class="card__index">04</p>
+                <h3>Report with evidence</h3>
+                <p>
+                  A finished report lists each finding, the image behind it, and
+                  the mission it came from.
+                </p>
+              </article>
+            </div>
+
+            <details class="tech-details reveal" data-d="60">
+              <summary>
+                <span class="tech-details__label">Technical detail</span>
+                <span class="tech-details__hint">How this is implemented
+                under the hood</span>
+                <span class="tech-details__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="tech-details__body">
+                <p>
+                  <strong>Mission orchestration</strong> — waypoint-based
+                  missions, dynamic route generation, live path preview, and
+                  staging boundaries. Mission identity and revision are carried
+                  end to end so a stale plan cannot be flown.
+                </p>
+                <p>
+                  <strong>Safety and integrity</strong> — position-dependent
+                  commands fail closed when telemetry is stale, route and
+                  geofence geometry are validated before upload, mission
+                  execution identity is preserved, and emergency LAND/RTL
+                  behaviour is retained.
+                </p>
+                <p>
+                  <strong>Postflight pipeline</strong> — deterministic handoff
+                  with pinned descriptors, identity validation and SHA-256
+                  checksums at every transfer boundary, plus no-overwrite
+                  publication into the durable artifact ledger.
+                </p>
+                <p>
+                  <strong>Operator visibility</strong> — live telemetry and
+                  state, route review, and explicit confirmation of the proposal
+                  fingerprint and mission revision before Flight B is staged.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Workflow -->
+      <section class="section section--alt" id="workflow">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="eyebrow"><span class="eyebrow__num">03</span> End-to-end
+              workflow</p>
+            <h2>Seven steps, two flights, one decision</h2>
+            <p>
+              The same sequence runs for every job. The drone flies twice — once
+              to map the asset, once to inspect it — and a person approves the
+              route in between. After each flight, the captured data is
+              transferred and checked before anything is analysed or reported.
+            </p>
+          </div>
+
+          <div class="flow">
+            <article class="flow__step reveal" data-phase="a">
+              <span class="flow__num">01</span>
+              <h3>Recon flight</h3>
+              <p>A mapping pass over the whole array to see what is
+                there.</p>
+            </article>
+            <article class="flow__step reveal" data-phase="a">
+              <span class="flow__num">02</span>
+              <h3>Landing &amp; data transfer</h3>
+              <p>After landing, the captured data is copied to the Field Box
+                and checked.</p>
+            </article>
+            <article class="flow__step reveal" data-phase="a">
+              <span class="flow__num">03</span>
+              <h3>Local analysis</h3>
+              <p>The data is processed on site into a panel map.</p>
+            </article>
+            <article class="flow__step reveal">
+              <span class="flow__num">04</span>
+              <h3>Operator approval</h3>
+              <p>An operator reviews and approves the proposed inspection
+                route.</p>
+            </article>
+            <article class="flow__step reveal" data-phase="b">
+              <span class="flow__num">05</span>
+              <h3>Inspection flight</h3>
+              <p>The approved route is flown to capture close-up
+                imagery.</p>
+            </article>
+            <article class="flow__step reveal" data-phase="b">
+              <span class="flow__num">06</span>
+              <h3>Landing &amp; data transfer</h3>
+              <p>The inspection data is transferred to the Field Box and
+                checked.</p>
+            </article>
+            <article class="flow__step reveal" data-phase="b">
+              <span class="flow__num">07</span>
+              <h3>Report</h3>
+              <p>Findings are listed with the image and mission behind
+                each one.</p>
+            </article>
+          </div>
+
+          <div class="flow-note reveal" data-d="120">
+            <span class="flow-note__tag">Why it matters</span>
+            <p>
+              Nothing moves to the next step automatically. A dataset that
+              fails its check stops there, and the inspection route is never
+              staged until a person has approved it.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Architecture -->
+      <section class="section" id="architecture">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="eyebrow"><span class="eyebrow__num">04</span>
+              Architecture</p>
+            <h2>DroneOS / Jetson Field Box / Onboard / PX4</h2>
+            <p>
+              Clear separation of concerns. <strong>PX4 remains the flight
+                authority.</strong> DroneOS coordinates, validates and
+              reports; it does not override PX4 flight control.
+            </p>
+          </div>
+
+          <div class="stack">
+            <article class="stack__layer reveal">
+              <div class="stack__id">Layer 01</div>
+              <div>
+                <h3 class="stack__name">Operator</h3>
+                <p class="stack__kind">The person in charge</p>
+                <div class="stack__desc">
+                  <p>Plans the mission, watches it fly, and approves the
+                    inspection route before it goes. Nothing is launched
+                    automatically.</p>
+                </div>
+              </div>
+              <div class="stack__role">Interface</div>
+            </article>
+
+            <div class="stack__axis reveal" aria-hidden="true">
+              <svg viewBox="0 0 12 14">
+                <path d="M6 1v10M2 9l4 4 4-4" stroke="currentColor"
+                  stroke-width="1.25" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+
+            <article class="stack__layer reveal">
+              <div class="stack__id">Layer 02</div>
+              <div>
+                <h3 class="stack__name">DroneOS</h3>
+                <p class="stack__kind">Mission and data layer</p>
+                <div class="stack__desc">
+                  <p>The software that ties the job together. It runs the
+                    inspection workflow, checks the data coming back, and
+                    builds the report.</p>
+                </div>
+              </div>
+              <div class="stack__role">Orchestration</div>
+            </article>
+
+            <div class="stack__axis reveal" aria-hidden="true">
+              <svg viewBox="0 0 12 14">
+                <path d="M6 1v10M2 9l4 4 4-4" stroke="currentColor"
+                  stroke-width="1.25" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+
+            <article class="stack__layer reveal">
+              <div class="stack__id">Layer 03</div>
+              <div>
+                <h3 class="stack__name">Jetson Field Box</h3>
+                <p class="stack__kind">The box on site</p>
+                <div class="stack__desc">
+                  <p>A small computer (NVIDIA Jetson Orin Nano) that runs
+                    DroneOS next to the solar array. Planning, data processing
+                    and storage all happen here.</p>
+                </div>
+              </div>
+              <div class="stack__role">Edge Node</div>
+            </article>
+
+            <div class="stack__axis reveal" aria-hidden="true">
+              <svg viewBox="0 0 12 14">
+                <path d="M6 1v10M2 9l4 4 4-4" stroke="currentColor"
+                  stroke-width="1.25" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+
+            <article class="stack__layer reveal">
+              <div class="stack__id">Layer 04</div>
+              <div>
+                <h3 class="stack__name">Onboard system</h3>
+                <p class="stack__kind">On the drone</p>
+                <div class="stack__desc">
+                  <p>The camera and its supporting software on the aircraft
+                    itself. It captures the imagery, then hands the data over
+                    to the Field Box.</p>
+                </div>
+              </div>
+              <div class="stack__role">Payload/Vehicle</div>
+            </article>
+
+            <div class="stack__axis reveal" aria-hidden="true">
+              <svg viewBox="0 0 12 14">
+                <path d="M6 1v10M2 9l4 4 4-4" stroke="currentColor"
+                  stroke-width="1.25" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+
+            <article class="stack__layer stack__layer--authority reveal">
+              <div class="stack__id">Layer 05</div>
+              <div>
+                <h3 class="stack__name">PX4 Autopilot</h3>
+                <p class="stack__kind">The flight controller</p>
+                <div class="stack__desc">
+                  <p>
+                    <strong>PX4 keeps flight authority.</strong> It flies the
+                    aircraft, holds the safety envelope and handles its own
+                    failsafes. DroneOS asks it to do things — it never takes
+                    over the controls.
+                  </p>
+                </div>
+              </div>
+              <div class="stack__role">Flight Authority</div>
+            </article>
+          </div>
+
+          <ul class="principles reveal" data-d="120">
+            <li>PX4 keeps flight authority at all times.</li>
+            <li>An operator approves every mission.</li>
+            <li>Data is processed on site.</li>
+            <li>Nothing proceeds on stale or unverified data.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 5. Use case -->
+      <section class="section section--alt" id="usecase">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="eyebrow"><span class="eyebrow__num">05</span> Initial
+              use case</p>
+            <h2>Solar panel inspections</h2>
+            <p>
+              A solar array is a good first target: the panels repeat, they
+              need regular checking, and a defect has to be documented rather
+              than just spotted. The same seven-step workflow applies, with
+              the drone flying the array twice.
+            </p>
+          </div>
+
+          <div class="usecase">
+            <div>
+              <article class="pass reveal">
+                <header class="pass__head">
+                  <span class="pass__label">Flight 1 of 2</span>
+                  <h3 class="pass__title">Mapping the array</h3>
+                </header>
+                <ol>
+                  <li>The drone flies a wide pass over the whole array</li>
+                  <li>It lands and the captured data moves to the Field
+                    Box</li>
+                  <li>The data is checked, then turned into a panel map</li>
+                  <li>A close-up inspection route is proposed from that map</li>
+                  <li><strong>An operator reviews and approves the
+                    route</strong></li>
+                </ol>
+              </article>
+
+              <article class="pass reveal" data-d="60">
+                <header class="pass__head">
+                  <span class="pass__label">Flight 2 of 2</span>
+                  <h3 class="pass__title">Inspecting and reporting</h3>
+                </header>
+                <ol>
+                  <li>The approved route is flown at close range</li>
+                  <li>It lands and the inspection data moves to the Field
+                    Box</li>
+                  <li>That data is checked, then analysed for findings</li>
+                  <li>A report lists each finding with the image and mission
+                    behind it</li>
+                </ol>
+              </article>
+            </div>
+
+            <figure class="usecase__figure reveal" data-d="80">
+              <svg viewBox="0 0 420 320" role="img"
+                aria-labelledby="solarTitle solarDesc">
+                <title id="solarTitle">How a solar inspection job runs</title>
+                <desc id="solarDesc">A mapping flight produces a panel map and
+                  a proposed inspection route. An operator approves it. A
+                  second flight inspects the panels and its data is checked
+                  before a report is produced.</desc>
+                <rect x="8" y="8" width="404" height="304" rx="12"
+                  fill="#070e18" stroke="rgba(146,180,216,.16)" />
+
+                <rect x="26" y="34" width="180" height="94" rx="8"
+                  fill="#0f1f30" stroke="rgba(62,208,228,.4)" />
+                <text x="116" y="62" text-anchor="middle"
+                  font-family="Archivo, Inter, sans-serif" font-size="17"
+                  font-weight="600" fill="#e8f0f8">Mapping flight</text>
+                <text x="116" y="86" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">Fly the whole array,</text>
+                <text x="116" y="105" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">check and map the data</text>
+
+                <rect x="234" y="106" width="160" height="86" rx="8"
+                  fill="#101824" stroke="rgba(227,168,92,.55)" />
+                <text x="314" y="136" text-anchor="middle"
+                  font-family="Archivo, Inter, sans-serif" font-size="16"
+                  font-weight="600" fill="#e8f0f8">Operator</text>
+                <text x="314" y="158" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">Reviews and</text>
+                <text x="314" y="176" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">approves the route</text>
+
+                <rect x="26" y="196" width="180" height="94" rx="8"
+                  fill="#0f1f30" stroke="rgba(62,208,228,.4)" />
+                <text x="116" y="224" text-anchor="middle"
+                  font-family="Archivo, Inter, sans-serif" font-size="17"
+                  font-weight="600" fill="#e8f0f8">Inspection flight</text>
+                <text x="116" y="248" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">Fly close-ups, check</text>
+                <text x="116" y="267" text-anchor="middle"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">the data, then report</text>
+
+                <path d="M116 134 v 56" stroke="#3ed0e4" stroke-width="2" />
+                <polygon points="110,184 116,196 122,184" fill="#3ed0e4" />
+                <text x="140" y="167" text-anchor="start"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">proposes</text>
+
+                <path d="M212 81 H 314 V 100" fill="none"
+                  stroke="#3ed0e4" stroke-width="2" />
+                <polygon points="308,96 314,106 320,96" fill="#3ed0e4" />
+
+                <path d="M314 198 V 243 H 212" fill="none"
+                  stroke="#e3a85c" stroke-width="2" />
+                <polygon points="218,237 206,243 218,249" fill="#e3a85c" />
+                <text x="290" y="230" text-anchor="end"
+                  font-family="Inter, sans-serif" font-size="13"
+                  fill="#a3b5c8">approved</text>
+              </svg>
+              <figcaption class="usecase__caption">Two-pass Solar workflow
+                with explicit operator confirmation</figcaption>
+            </figure>
+          </div>
+
+          <div class="disclosure reveal" data-d="120">
+            <p>
+              <strong>What is not yet shown:</strong> the capture and
+              analysis steps are validated in simulation, not on real imagery.
+              See <a href="#status">Status &amp; Vision</a> for exactly what has
+              and has not been validated.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Status & Future Vision -->
+      <section class="section" id="status">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="eyebrow"><span class="eyebrow__num">06</span> Status &amp;
+              Vision</p>
+            <h2>What works today, and what comes next</h2>
+            <p>
+              The platform is in active development. Everything on the left has
+              been exercised in simulation; everything on the right is planned
+              work that has not been validated yet.
+            </p>
+          </div>
+
+          <div class="status">
+            <div class="status__col status__col--now reveal">
+              <header class="status__col-head">
+                <span class="status__dot"></span>
+                <h3>Working today</h3>
+                <span class="status__legend">Validated in simulation</span>
+              </header>
+              <ul class="status__list">
+                <li>The full seven-step inspection workflow, from mapping
+                  flight to report.</li>
+                <li>Mission preparation, upload to the autopilot, automated
+                  flight and landing.</li>
+                <li>Data transfer after each flight, with a check that stops
+                  the job if something is wrong.</li>
+                <li>Operator review and approval before the inspection route
+                  is ever staged.</li>
+                <li>Reports where every finding can be traced back to the
+                  image and mission it came from.</li>
+                <li>Automatic test suites covering the safety and failure
+                  paths.</li>
+                <li>A local-first setup that runs on a Field Box computer as
+                  well as a laptop.</li>
+              </ul>
+            </div>
+
+            <div class="status__col status__col--next reveal" data-d="80">
+              <header class="status__col-head">
+                <span class="status__dot"></span>
+                <h3>Still to come</h3>
+                <span class="status__legend">Not yet validated</span>
+              </header>
+              <ul class="status__list">
+                <li>Real flights under defined test conditions.</li>
+                <li>Real cameras and capture hardware on the aircraft.</li>
+                <li>Real solar-field imagery, and the analysis that turns it
+                  into findings.</li>
+                <li>Thermal and visual defect detection with production-grade
+                  accuracy.</li>
+                <li>Hardening the Field Box for dependable long-term field
+                  use.</li>
+                <li>Extended recovery behaviour if something goes wrong in
+                  the field.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="status__scope reveal" data-d="120">
+            <h3 class="status__scope-title">How far along this really is</h3>
+            <p>
+              The work so far has been validated in a flight simulator
+              (PX4 with Gazebo), not in the air. So the workflow, the data
+              handoffs and the safety behaviour have been tested, while the
+              aircraft, the cameras and the defect detection are still
+              development targets. We are not claiming real-flight validation,
+              certified functional safety, production cybersecurity,
+              autonomous obstacle avoidance, commercial readiness or
+              regulatory approval.
+            </p>
+          </div>
+
+          <details class="tech-details reveal" data-d="140">
+            <summary>Validation environment and technical detail</summary>
+            <div class="tech-details__body">
+              <p>
+                Validation ran against PX4 v1.16.2 SITL with Gazebo, Python
+                3.12, and Docker for the backend and dashboard. A
+                laptop-hosted simulator is development and test
+                infrastructure, not the intended Field Box product.
+              </p>
+              <ul>
+                <li>Mission identity, revision and checksum integrity
+                  (SHA-256) are enforced; mismatches stop the job.</li>
+                <li>Report and workflow state names used by the runtime
+                  include <code>REPORT_READY</code> and its pre-staging
+                  states.</li>
+                <li>Fail-closed boundaries and bounded recovery are covered
+                  by the safe test suite.</li>
+                <li>Capture currently uses deterministic demo providers in
+                  place of physical drone-side camera hardware.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 7. Contact & Footer -->
+      <section class="section section--alt" id="contact">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="eyebrow"><span class="eyebrow__num">07</span> Contact
+            </p>
+            <h2>Get in touch</h2>
+            <p>
+              We are building this in the open, and we would be glad to talk
+              about it.
+            </p>
+          </div>
+
+          <div class="contact">
+            <div class="contact__panel reveal">
+              <p class="lede">
+                If you run solar assets, work in inspection services, or build
+                drone or autonomy software, we would like to hear what you are
+                working on.
+              </p>
+              <p class="prose u-mt-sm">
+                We are especially interested in pilot projects on real solar
+                fields, and in technical conversations about local-first drone
+                mission control.
+              </p>
+
+              <div class="contact__row">
+                <span class="contact__label">Organisation</span>
+                <div class="contact__value">Onel-Dynamics</div>
+                <p class="contact__note">
+                  Industrial autonomy — local-first, safety-first drone
+                  mission coordination.
+                </p>
+              </div>
+
+              <div class="contact__row">
+                <span class="contact__label">Primary contact</span>
+                <div class="contact__value contact__value--todo">Contact
+                  details to be added</div>
+                <p class="contact__note">
+                  An email address and phone number will be published here.
+                </p>
+              </div>
+
+              <div class="contact__actions">
+                <a href="#status" class="btn btn--ghost">See where we are
+                  today</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell">
+        <div class="footer__top">
+          <div class="footer__about">
+            <a class="brand" href="#top" aria-label="Onel-Dynamics home">
+              <svg class="brand__mark" viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path
+                  d="M3 18h5V6H3v12zm8 0h5v-4h-5v4zm0-8h5V6h-5v6zm8 8h2V6h-2v12z"
+                  fill="#3ed0e4" opacity=".95" />
+                <circle cx="19.5" cy="11.5" r="1.25" fill="#86e4f1" />
+              </svg>
+              <div class="brand__text">
+                <span class="brand__name">Onel<span>-</span>Dynamics</span>
+                <span class="brand__sub">Industrial Autonomy</span>
+              </div>
+            </a>
+            <p>
+              Onel-Dynamics develops DroneOS—a local-first platform for
+              planning, monitoring and analysing autonomous drone missions.
+              PX4 remains the flight authority at all times.
+            </p>
+          </div>
+
+          <nav class="footer__nav">
+            <ul>
+              <li><a href="#about">About</a></li>
+              <li><a href="#problem">Platform</a></li>
+              <li><a href="#workflow">Workflow</a></li>
+              <li><a href="#architecture">Architecture</a></li>
+              <li><a href="#usecase">Solar Inspections</a></li>
+              <li><a href="#status">Status & Vision</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="footer__bottom">
+          <div class="footer__legal">
+            <span class="status__dot"></span>
+            <span>Project status: Under development and validation — not
+              production-ready</span>
+          </div>
+          <div>
+            © <span id="year"></span> Onel-Dynamics. All rights reserved.
+          </div>
+          <div class="mono muted">
+            Local-first • Edge-first • Operator-in-the-loop
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+
+</html>

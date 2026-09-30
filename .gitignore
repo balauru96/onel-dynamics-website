@@ -1,0 +1,27 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+*.bak
+*.log
+
+# Local environment - never commit secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Dependencies / build output (this project has none, but stay safe)
+node_modules/
+_site/
+
+# Local verification scratch (browser screenshots, playwright harness)
+verify/
+test-results/
+playwright-report/

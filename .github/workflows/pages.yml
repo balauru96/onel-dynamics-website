@@ -1,0 +1,50 @@
+name: Deploy site to GitHub Pages
+
+# Publishes the live site. This runs only when approved design work is
+# merged into main, so the public site never changes without review.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # Publish only the site itself. README, opencode.json, .opencode/ and
+      # .github/ are source material and must not be part of the public site.
+      - name: Stage site files
+        run: |
+          mkdir -p _site/assets
+          cp index.html _site/
+          cp -r assets/css assets/js assets/img _site/assets/
+          touch _site/.nojekyll
+          echo "Publishing:" && find _site -type f | sort
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
