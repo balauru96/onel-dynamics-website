@@ -1864,13 +1864,13 @@ p {
 .hero__title { font-size: clamp(2.35rem, 3.8vw, 4rem); line-height: 1.08; }
 .hero__title em { display: block; margin-top: .25em; color: var(--tx-2); }
 .hero__visual { min-width: 0; }
-.drone-scene { position: relative; border: 1px solid var(--line-2); border-radius: 24px; background: radial-gradient(ellipse at 50% 40%, #142b3e, var(--surface) 70%); overflow: hidden; box-shadow: 0 24px 80px rgba(0, 0, 0, .3); }
+.drone-scene { position: relative; border: 1px solid var(--line-2); border-radius: 24px; background: radial-gradient(ellipse at 50% 40%, #142b3e, var(--surface) 70%); overflow: hidden; box-shadow: 0 24px 80px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(232, 240, 248, .08); }
 .drone-scene__heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; padding: 1.2rem 1.4rem; font-family: var(--mono); font-size: .75rem; color: var(--tx-2); border-bottom: 1px solid var(--line); }
 .drone-scene__coordinate { color: var(--tx-3); }
 .drone-scene__viewport { position: relative; aspect-ratio: 3 / 2; display: grid; place-items: center; isolation: isolate; }
 .drone-scene__aircraft { position: relative; z-index: 2; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 20px 18px rgba(0, 0, 0, .4)); }
 .drone-scene__orbit { position: absolute; width: 62%; aspect-ratio: 1; border: 1px solid rgba(134, 228, 241, .24); border-radius: 50%; transform: rotateX(62deg); bottom: -3%; }
-.drone-scene__orbit--outer { width: 90%; bottom: -19%; border-style: dashed; opacity: .6; }
+.drone-scene__orbit--outer { --orbit-opacity: .6; width: 90%; bottom: -19%; border-style: dashed; opacity: .6; }
 .drone-scene__crosshair { position: absolute; inset: 12% 10%; border: 1px solid var(--line); border-radius: 50%; opacity: .5; }
 .drone-scene__shadow { position: absolute; z-index: 1; width: 45%; height: 8%; bottom: 16%; border-radius: 50%; background: rgba(0, 0, 0, .4); filter: blur(12px); }
 .drone-scene__caption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; padding: 1rem 1.4rem; border-top: 1px solid var(--line); background: var(--surface); color: var(--tx-2); font-size: .75rem; }
@@ -1889,13 +1889,16 @@ p {
 .intro-ready .hero__visual { opacity: 1; transform: none; }
 .intro-ready .drone-scene__aircraft { animation: drone-arrival 2.2s cubic-bezier(.16, 1, .3, 1) both; }
 .intro-ready .drone-scene__shadow { animation: shadow-arrival 2.2s ease-out both; }
-.intro-ready .hero__copy > * { animation: intro-copy .9s cubic-bezier(.16, 1, .3, 1) backwards; }
-.intro-ready .hero__title { animation-delay: .12s; }
-.intro-ready .hero__lede { animation-delay: .24s; }
-.intro-ready .hero__status { animation-delay: .34s; }
-.intro-ready .hero__actions { animation-delay: .42s; }
-.intro-ready .hero__meta { animation-delay: .5s; }
+.intro-copy-ready .hero__copy > * { animation: intro-copy .75s cubic-bezier(.16, 1, .3, 1) backwards; }
+.intro-copy-ready .hero__title { animation-delay: .1s; }
+.intro-copy-ready .hero__lede { animation-delay: .2s; }
+.intro-copy-ready .hero__status { animation-delay: .28s; }
+.intro-copy-ready .hero__actions { animation-delay: .36s; }
+.intro-copy-ready .hero__meta { animation-delay: .42s; }
+.intro-ready .drone-scene__orbit { animation: orbit-arrival 1.4s ease-out both; }
+.intro-ready .drone-scene__orbit--outer { animation-delay: .12s; }
 .intro-paused .hero__copy > *,
+.intro-paused .drone-scene__orbit,
 .intro-paused .drone-scene__aircraft,
 .intro-paused .drone-scene__shadow { animation-play-state: paused; }
 @keyframes drone-arrival {
@@ -1912,6 +1915,10 @@ p {
   from { opacity: .25; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes orbit-arrival {
+  from { opacity: 0; transform: rotateX(62deg) scale(.88); }
+  to { opacity: var(--orbit-opacity, 1); transform: rotateX(62deg) scale(1); }
+}
 @media (max-width: 960px) {
   .hero__grid { grid-template-columns: minmax(0, 1fr); }
   .hero__visual { width: 100%; max-width: 42rem; margin-inline: auto; }
@@ -1923,7 +1930,8 @@ p {
   .contact__actions .btn { width: 100%; justify-content: center; white-space: normal; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .intro-ready .hero__copy > *,
+  .intro-copy-ready .hero__copy > *,
+  .intro-ready .drone-scene__orbit,
   .intro-ready .drone-scene__shadow,
   .drone-scene__aircraft { animation: none !important; }
   .motion-toggle { display: none; }

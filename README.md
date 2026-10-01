@@ -120,8 +120,10 @@ implementation detail is kept out of the main reading path:
 The hero uses a generated, illustrative drone asset; it does not depict
 validated hardware. On opening the website, a 2.2-second drone entrance
 settles into the hero while the text appears in a short sequence. It starts
-when the image is ready, only when the hero is in view, and never blocks
-navigation. Visitors can replay or pause the transition. Reduced-motion
+when the image is ready and the drone viewport enters the screen, including
+after scrolling on mobile or activating a background tab. The text joins
+the sequence only while visible. Navigation is never blocked. Visitors can
+replay or pause the transition. Reduced-motion
 preferences disable animation; the image and navigation remain usable
 without JavaScript. There are no accounts or authentication services.
 - Fonts load from Google Fonts; the page falls back to system stacks offline

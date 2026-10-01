@@ -15,34 +15,44 @@
   var motionToggle = document.getElementById("motionToggle");
   var aircraft = document.querySelector(".drone-scene__aircraft");
   var hero = document.getElementById("about");
-  if (motionToggle && aircraft && hero) {
+  var stage = document.querySelector(".drone-scene__viewport");
+  var heroCopy = document.querySelector(".hero__copy");
+  if (motionToggle && aircraft && hero && stage) {
     var motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     var finished = true;
     var started = false;
     function settle() {
-      root.classList.remove("intro-ready", "intro-paused");
+      root.classList.remove("intro-ready", "intro-copy-ready", "intro-paused");
       finished = true;
-      motionToggle.textContent = "Replay animation";
+      motionToggle.textContent = started ? "Replay animation" : "Play animation";
       motionToggle.setAttribute("aria-pressed", "false");
     }
     function play() {
-      if (motionPreference.matches || !aircraft.naturalWidth) return;
+      if (document.hidden || motionPreference.matches || !aircraft.naturalWidth) return;
       settle();
       hero.offsetWidth; // Restart the sequence only on opening or explicit replay.
       root.classList.add("intro-ready");
+      if (heroCopy) {
+        var copyBounds = heroCopy.getBoundingClientRect();
+        if (copyBounds.top < window.innerHeight && copyBounds.bottom > 0) {
+          root.classList.add("intro-copy-ready");
+        }
+      }
+      started = true;
       finished = false;
       motionToggle.textContent = "Pause animation";
     }
     function syncMotion() {
       motionToggle.hidden = motionPreference.matches || !aircraft.naturalWidth;
       if (motionPreference.matches) settle();
+      else if (finished) motionToggle.textContent = started ? "Replay animation" : "Play animation";
     }
     function startWhenReady() {
       syncMotion();
-      if (started || motionPreference.matches || !aircraft.naturalWidth) return;
-      started = true;
-      var bounds = hero.getBoundingClientRect();
-      if (!document.hidden && bounds.top < window.innerHeight && bounds.bottom > 0) play();
+      if (started || document.hidden || motionPreference.matches || !aircraft.naturalWidth) return;
+      var bounds = stage.getBoundingClientRect();
+      var visibleHeight = Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0);
+      if (visibleHeight >= Math.min(bounds.height * 0.2, 80)) play();
     }
     aircraft.addEventListener("animationend", function (event) {
       if (event.animationName !== "drone-arrival") return;
@@ -61,9 +71,20 @@
     });
     syncMotion();
     if (aircraft.complete) startWhenReady();
-    if (motionPreference.addEventListener) motionPreference.addEventListener("change", syncMotion);
-    else if (motionPreference.addListener) motionPreference.addListener(syncMotion);
-    window.addEventListener("pageshow", function (event) { if (event.persisted) settle(); });
+    if (motionPreference.addEventListener) motionPreference.addEventListener("change", startWhenReady);
+    else if (motionPreference.addListener) motionPreference.addListener(startWhenReady);
+    document.addEventListener("visibilitychange", startWhenReady);
+    var entranceQueued = false;
+    function queueEntrance() {
+      if (started || entranceQueued) return;
+      entranceQueued = true;
+      window.requestAnimationFrame(function () { entranceQueued = false; startWhenReady(); });
+    }
+    window.addEventListener("scroll", queueEntrance, { passive: true });
+    window.addEventListener("resize", queueEntrance);
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) { started = true; settle(); }
+    });
   }
 
   /* ---------------------------------------------------------------- Footer year */
