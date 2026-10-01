@@ -113,12 +113,13 @@ implementation detail is kept out of the main reading path:
 - No build tooling, bundler, or `package.json`
 - No frameworks — the DroneOS project is vanilla HTML/CSS/JS, and this site
   matches that stack
-- No analytics or third-party embeds
+- No analytics, accounts, cookies, or third-party embeds
 
-## Website accounts
+## Drone concept animation
 
-`account.html` provides registration and sign-in through Supabase Auth once
-the owner supplies public project settings. It grants no DroneOS access.
-See [AUTH_SETUP.md](AUTH_SETUP.md) for activation and verification. Without
-configuration the page clearly reports registration is unavailable.
+The hero uses a generated, illustrative drone asset; it does not depict
+validated hardware. A subtle hover animation runs once for four seconds.
+Visitors can replay or pause it with JavaScript enabled. Reduced-motion
+preferences disable animation; the image and navigation remain usable
+without JavaScript. There are no accounts or authentication services.
 - Fonts load from Google Fonts; the page falls back to system stacks offline

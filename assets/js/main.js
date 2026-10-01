@@ -11,6 +11,50 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
+  /* ---------------------------------------------------------------- Drone concept */
+  var motionToggle = document.getElementById("motionToggle");
+  var aircraft = document.querySelector(".drone-scene__aircraft");
+  if (motionToggle && aircraft) {
+    var motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var finished = false;
+    var syncMotion = function () {
+      motionToggle.hidden = motionPreference.matches;
+      if (motionPreference.matches) {
+        aircraft.style.animation = "none";
+        aircraft.style.animationPlayState = "running";
+        motionToggle.setAttribute("aria-pressed", "false");
+        finished = true;
+      } else {
+        motionToggle.textContent = finished ? "Replay animation" : "Pause animation";
+      }
+    };
+    aircraft.addEventListener("animationend", function () {
+      finished = true;
+      motionToggle.textContent = "Replay animation";
+      motionToggle.setAttribute("aria-pressed", "false");
+    });
+    motionToggle.addEventListener("click", function () {
+      if (motionPreference.matches) return;
+      if (finished) {
+        aircraft.style.animation = "none";
+        aircraft.offsetWidth; // Restart only after an explicit replay request.
+        aircraft.style.animation = "";
+        aircraft.style.animationPlayState = "running";
+        finished = false;
+        motionToggle.textContent = "Pause animation";
+        motionToggle.setAttribute("aria-pressed", "false");
+      } else {
+        var paused = motionToggle.getAttribute("aria-pressed") !== "true";
+        aircraft.style.animationPlayState = paused ? "paused" : "running";
+        motionToggle.setAttribute("aria-pressed", paused ? "true" : "false");
+        motionToggle.textContent = paused ? "Resume animation" : "Pause animation";
+      }
+    });
+    syncMotion();
+    if (motionPreference.addEventListener) motionPreference.addEventListener("change", syncMotion);
+    else if (motionPreference.addListener) motionPreference.addListener(syncMotion);
+  }
+
   /* ---------------------------------------------------------------- Footer year */
   var yearEl = document.getElementById("year");
   if (yearEl) {

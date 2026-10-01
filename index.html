@@ -58,7 +58,7 @@
             <li><a class="nav__link" href="#status">Status & Vision</a></li>
             <li><a class="nav__link" href="#contact">Contact</a></li>
           </ul>
-          <a class="nav__cta" href="account.html">Create account / Sign in</a>
+          <a class="nav__cta" href="mailto:o.ionut1996@gmail.com">Get in touch</a>
         </nav>
 
         <button class="nav-toggle" id="navToggle" aria-expanded="false"
@@ -82,8 +82,8 @@
               Onel-Dynamics
             </p>
             <h1 class="hero__title">
-              Drone mission orchestration. From planning to inspection
-              reports.
+              Drone mission orchestration.<br />
+              <em>From planning to inspection reports.</em>
             </h1>
             <p class="hero__lede">
               Onel-Dynamics is developing <strong>DroneOS</strong> to
@@ -146,7 +146,27 @@
             </dl>
           </div>
 
-          <div class="hero__figure reveal" data-d="80">
+          <div class="hero__visual reveal" data-d="80">
+            <figure class="drone-scene">
+              <div class="drone-scene__heading">
+                <span>Inspection concept</span>
+                <span class="drone-scene__coordinate" aria-hidden="true">01 / AIRFRAME</span>
+              </div>
+              <div class="drone-scene__viewport" aria-hidden="true">
+                <div class="drone-scene__orbit"></div>
+                <div class="drone-scene__orbit drone-scene__orbit--outer"></div>
+                <div class="drone-scene__crosshair"></div>
+                <img class="drone-scene__aircraft" src="assets/img/drone-concept.webp" alt="" width="1200" height="800" fetchpriority="high" />
+                <div class="drone-scene__shadow"></div>
+              </div>
+              <figcaption class="drone-scene__caption">
+                <span>Concept illustration · not validated hardware</span>
+                <button class="motion-toggle" id="motionToggle" type="button" aria-pressed="false" hidden>Pause animation</button>
+              </figcaption>
+            </figure>
+            <details class="hero__system">
+              <summary>How DroneOS fits together</summary>
+          <div class="hero__figure">
             <div class="hero__figure-head">
               <span>System outline</span>
               <span>DroneOS • PX4 • Field Box</span>
@@ -238,6 +258,8 @@
               <div>A person approves each mission</div>
               <div>Data stays on site</div>
             </div>
+          </div>
+            </details>
           </div>
         </div>
       </section>
@@ -847,6 +869,7 @@
               </div>
 
               <div class="contact__actions">
+                <a href="mailto:o.ionut1996@gmail.com" class="btn btn--primary">Email Onel-Dynamics</a>
                 <a href="#status" class="btn btn--ghost">See where we are
                   today</a>
               </div>
