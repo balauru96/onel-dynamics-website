@@ -64,7 +64,7 @@
     });
 
     /* Close and return to the toggle when the layout becomes desktop again. */
-    var desktop = window.matchMedia("(min-width: 861px)");
+    var desktop = window.matchMedia("(min-width: 1281px)");
     var onBreakpoint = function (event) {
       if (event.matches) setOpen(false);
     };
@@ -109,45 +109,38 @@
     })
     .filter(Boolean);
 
-  if (targets.length && "IntersectionObserver" in window) {
-    var visible = new Map();
-
-    var spy = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            visible.set(entry.target.id, entry.intersectionRatio);
-          } else {
-            visible.delete(entry.target.id);
-          }
-        });
-
-        var bestId = null;
-        var bestRatio = 0;
-        visible.forEach(function (ratio, id) {
-          if (ratio > bestRatio) {
-            bestRatio = ratio;
-            bestId = id;
-          }
-        });
-
-        links.forEach(function (link) {
-          var isActive = link.getAttribute("href") === "#" + bestId;
-          if (isActive) {
-            link.setAttribute("aria-current", "true");
-          } else {
-            link.removeAttribute("aria-current");
-          }
-        });
-      },
-      {
-        rootMargin: "-30% 0px -55% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
+  if (targets.length) {
+    var updateCurrent = function () {
+      var current = targets[0];
+      var marker = Math.max(header ? header.getBoundingClientRect().bottom : 0,
+        window.innerHeight * 0.3);
+      targets.forEach(function (section) {
+        if (section.getBoundingClientRect().top <= marker) current = section;
+      });
+      if (window.scrollY + window.innerHeight >= root.scrollHeight - 2) {
+        current = targets[targets.length - 1];
       }
-    );
-
-    targets.forEach(function (section) {
-      spy.observe(section);
-    });
+      links.forEach(function (link) {
+        if (link.getAttribute("href") === "#" + current.id) {
+          link.setAttribute("aria-current", "true");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+    var scheduled = false;
+    var scheduleCurrent = function () {
+      if (scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(function () {
+        scheduled = false;
+        updateCurrent();
+      });
+    };
+    updateCurrent();
+    window.addEventListener("scroll", scheduleCurrent, { passive: true });
+    window.addEventListener("resize", scheduleCurrent);
+    window.addEventListener("load", scheduleCurrent);
+    document.addEventListener("toggle", scheduleCurrent, true);
   }
 })();

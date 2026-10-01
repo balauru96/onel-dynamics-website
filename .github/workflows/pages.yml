@@ -35,7 +35,7 @@ jobs:
       - name: Stage site files
         run: |
           mkdir -p _site/assets
-          cp index.html _site/
+          cp index.html account.html _site/
           cp -r assets/css assets/js assets/img _site/assets/
           touch _site/.nojekyll
           echo "Publishing:" && find _site -type f | sort
@@ -48,3 +48,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+

@@ -91,7 +91,7 @@ Tokens live in the `:root` block at the top of `assets/css/styles.css`.
 The copy deliberately separates **validated today** from **planned work**.
 The project is presented as under development and validation. There are no
 invented customers, certifications, performance metrics, partnerships, or
-available features. The contact block is an explicit placeholder.
+available features. The contact block uses the owner-provided email address.
 
 The body copy is written for partners and solar-inspection customers, so
 implementation detail is kept out of the main reading path:
@@ -113,5 +113,12 @@ implementation detail is kept out of the main reading path:
 - No build tooling, bundler, or `package.json`
 - No frameworks — the DroneOS project is vanilla HTML/CSS/JS, and this site
   matches that stack
-- No analytics, cookies, or third-party embeds
+- No analytics or third-party embeds
+
+## Website accounts
+
+`account.html` provides registration and sign-in through Supabase Auth once
+the owner supplies public project settings. It grants no DroneOS access.
+See [AUTH_SETUP.md](AUTH_SETUP.md) for activation and verification. Without
+configuration the page clearly reports registration is unavailable.
 - Fonts load from Google Fonts; the page falls back to system stacks offline

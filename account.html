@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Your account — Onel-Dynamics</title>
+  <meta name="description" content="Create or sign in to your Onel-Dynamics website account.">
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/account.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header"><div class="shell header__inner">
+    <a class="brand" href="./index.html">Onel-Dynamics</a>
+    <a class="btn btn--ghost" href="./index.html#contact">Contact</a>
+  </div></header>
+  <main id="main" class="shell account-shell">
+    <div class="account-card">
+      <h1>Your account</h1>
+      <p class="lede">Create an account with your email address, or sign in.</p>
+      <p class="account-note">This account is for the Onel-Dynamics website. It does not provide access to DroneOS or drone controls.</p>
+      <noscript><p>Enable JavaScript to create an account or sign in. You can also <a href="mailto:o.ionut1996@gmail.com">contact us by email</a>.</p></noscript>
+      <p id="accountStatus" role="status" aria-live="polite">Checking account availability…</p>
+      <form id="accountForm" hidden>
+        <fieldset id="accountFields">
+          <legend class="visually-hidden">Account details</legend>
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required maxlength="254">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" aria-describedby="passwordHint" required>
+          <p id="passwordHint" class="account-note">Use at least 12 characters.</p>
+          <label for="confirmPassword" id="confirmLabel">Confirm password</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required>
+          <button class="btn btn--primary" type="submit" id="accountSubmit">Create account</button>
+        </fieldset>
+      </form>
+      <button class="btn btn--ghost" type="button" id="accountSwitch" hidden>Already have an account? Sign in</button>
+      <button class="btn btn--ghost" type="button" id="accountSignOut" hidden>Sign out</button>
+      <p class="account-note">Need help? <a href="mailto:o.ionut1996@gmail.com">o.ionut1996@gmail.com</a></p>
+    </div>
+  </main>
+  <script src="assets/js/auth-config.js"></script>
+  <script src="assets/js/account.js"></script>
+</body>
+</html>

@@ -195,10 +195,6 @@ p {
   padding-inline: var(--gutter);
 }
 
-.shell--narrow {
-  max-width: 58rem;
-}
-
 .section {
   position: relative;
   padding-block: var(--section-y);
@@ -819,34 +815,6 @@ p {
   color: var(--tx-2);
   font-size: 0.9375rem;
   line-height: 1.62;
-}
-
-.card__list {
-  margin: 0.9rem 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.875rem;
-  color: var(--tx-3);
-}
-
-.card__list li {
-  position: relative;
-  padding-left: 1rem;
-  line-height: 1.55;
-}
-
-.card__list li + li {
-  margin-top: 0.4rem;
-}
-
-.card__list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.66em;
-  width: 4px;
-  height: 1px;
-  background: var(--line-3);
 }
 
 /* --------------------------------------------------------------------------
@@ -1529,6 +1497,7 @@ p {
 }
 
 .contact__value {
+  overflow-wrap: anywhere;
   font-family: var(--display);
   font-size: var(--t-2);
   font-weight: 600;
@@ -1541,10 +1510,6 @@ p {
   color: var(--tx-2);
   line-height: 1.6;
   margin-top: 0.35rem;
-}
-
-.contact__value--todo {
-  color: var(--warn);
 }
 
 .contact__actions {
@@ -1728,12 +1693,16 @@ p {
   }
 }
 
-@media (max-width: 860px) {
-  .nav-toggle {
+@media (max-width: 1280px) {
+  html:not(.js) .header { position: relative; }
+  html:not(.js) .header__inner { flex-wrap: wrap; }
+  html:not(.js) .nav { width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 1rem; }
+
+  .js .nav-toggle {
     display: inline-flex;
   }
 
-  .nav {
+  .js .nav {
     position: fixed;
     inset: var(--header-h) 0 auto 0;
     flex-direction: column;
@@ -1917,3 +1886,4 @@ p {
     transform: none;
   }
 }
+
