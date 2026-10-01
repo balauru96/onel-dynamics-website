@@ -118,8 +118,10 @@ implementation detail is kept out of the main reading path:
 ## Drone concept animation
 
 The hero uses a generated, illustrative drone asset; it does not depict
-validated hardware. A subtle hover animation runs once for four seconds.
-Visitors can replay or pause it with JavaScript enabled. Reduced-motion
+validated hardware. On opening the website, a 2.2-second drone entrance
+settles into the hero while the text appears in a short sequence. It starts
+when the image is ready, only when the hero is in view, and never blocks
+navigation. Visitors can replay or pause the transition. Reduced-motion
 preferences disable animation; the image and navigation remain usable
 without JavaScript. There are no accounts or authentication services.
 - Fonts load from Google Fonts; the page falls back to system stacks offline
