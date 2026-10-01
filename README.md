@@ -91,7 +91,7 @@ Tokens live in the `:root` block at the top of `assets/css/styles.css`.
 The copy deliberately separates **validated today** from **planned work**.
 The project is presented as under development and validation. There are no
 invented customers, certifications, performance metrics, partnerships, or
-available features. The contact block is an explicit placeholder.
+available features. The contact block uses the owner-provided email address.
 
 The body copy is written for partners and solar-inspection customers, so
 implementation detail is kept out of the main reading path:
@@ -113,5 +113,13 @@ implementation detail is kept out of the main reading path:
 - No build tooling, bundler, or `package.json`
 - No frameworks — the DroneOS project is vanilla HTML/CSS/JS, and this site
   matches that stack
-- No analytics, cookies, or third-party embeds
+- No analytics, accounts, cookies, or third-party embeds
+
+## Drone concept animation
+
+The hero uses a generated, illustrative drone asset; it does not depict
+validated hardware. A subtle hover animation runs once for four seconds.
+Visitors can replay or pause it with JavaScript enabled. Reduced-motion
+preferences disable animation; the image and navigation remain usable
+without JavaScript. There are no accounts or authentication services.
 - Fonts load from Google Fonts; the page falls back to system stacks offline

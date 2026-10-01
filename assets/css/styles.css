@@ -61,8 +61,8 @@
   --maxw: 76rem;
   --maxw-prose: 44rem;
 
-  --radius: 4px;
-  --radius-lg: 8px;
+  --radius: 8px;
+  --radius-lg: 16px;
 
   --header-h: 68px;
 
@@ -193,10 +193,6 @@ p {
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--gutter);
-}
-
-.shell--narrow {
-  max-width: 58rem;
 }
 
 .section {
@@ -347,7 +343,7 @@ p {
   font-weight: 550;
   letter-spacing: -0.005em;
   text-decoration: none;
-  white-space: nowrap;
+  white-space: normal;
   transition:
     background-color var(--dur) var(--ease),
     border-color var(--dur) var(--ease),
@@ -819,34 +815,6 @@ p {
   color: var(--tx-2);
   font-size: 0.9375rem;
   line-height: 1.62;
-}
-
-.card__list {
-  margin: 0.9rem 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.875rem;
-  color: var(--tx-3);
-}
-
-.card__list li {
-  position: relative;
-  padding-left: 1rem;
-  line-height: 1.55;
-}
-
-.card__list li + li {
-  margin-top: 0.4rem;
-}
-
-.card__list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.66em;
-  width: 4px;
-  height: 1px;
-  background: var(--line-3);
 }
 
 /* --------------------------------------------------------------------------
@@ -1529,6 +1497,7 @@ p {
 }
 
 .contact__value {
+  overflow-wrap: anywhere;
   font-family: var(--display);
   font-size: var(--t-2);
   font-weight: 600;
@@ -1541,10 +1510,6 @@ p {
   color: var(--tx-2);
   line-height: 1.6;
   margin-top: 0.35rem;
-}
-
-.contact__value--todo {
-  color: var(--warn);
 }
 
 .contact__actions {
@@ -1728,12 +1693,16 @@ p {
   }
 }
 
-@media (max-width: 860px) {
-  .nav-toggle {
+@media (max-width: 1280px) {
+  html:not(.js) .header { position: relative; }
+  html:not(.js) .header__inner { flex-wrap: wrap; }
+  html:not(.js) .nav { width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 1rem; }
+
+  .js .nav-toggle {
     display: inline-flex;
   }
 
-  .nav {
+  .js .nav {
     position: fixed;
     inset: var(--header-h) 0 auto 0;
     flex-direction: column;
@@ -1888,6 +1857,53 @@ p {
 /* --------------------------------------------------------------------------
    18. Print
    -------------------------------------------------------------------------- */
+
+/* Modern presentation: generous type, instrument-like framing and a quiet
+   drone concept. Cyan remains the interactive/diagram accent. */
+.hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); }
+.hero__title { font-size: clamp(2.35rem, 3.8vw, 4rem); line-height: 1.08; }
+.hero__title em { display: block; margin-top: .25em; color: var(--tx-2); }
+.hero__visual { min-width: 0; }
+.drone-scene { position: relative; border: 1px solid var(--line-2); border-radius: 24px; background: radial-gradient(ellipse at 50% 40%, #142b3e, var(--surface) 70%); overflow: hidden; box-shadow: 0 24px 80px rgba(0, 0, 0, .3); }
+.drone-scene__heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; padding: 1.2rem 1.4rem; font-family: var(--mono); font-size: .75rem; color: var(--tx-2); border-bottom: 1px solid var(--line); }
+.drone-scene__coordinate { color: var(--tx-3); }
+.drone-scene__viewport { position: relative; aspect-ratio: 3 / 2; display: grid; place-items: center; isolation: isolate; }
+.drone-scene__aircraft { position: relative; z-index: 2; width: 100%; height: 100%; object-fit: contain; animation: drone-hover 4s ease-in-out 1; filter: drop-shadow(0 20px 18px rgba(0, 0, 0, .4)); }
+.drone-scene__orbit { position: absolute; width: 62%; aspect-ratio: 1; border: 1px solid rgba(134, 228, 241, .24); border-radius: 50%; transform: rotateX(62deg); bottom: -3%; }
+.drone-scene__orbit--outer { width: 90%; bottom: -19%; border-style: dashed; opacity: .6; }
+.drone-scene__crosshair { position: absolute; inset: 12% 10%; border: 1px solid var(--line); border-radius: 50%; opacity: .5; }
+.drone-scene__shadow { position: absolute; z-index: 1; width: 45%; height: 8%; bottom: 16%; border-radius: 50%; background: rgba(0, 0, 0, .4); filter: blur(12px); }
+.drone-scene__caption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; padding: 1rem 1.4rem; border-top: 1px solid var(--line); background: var(--surface); color: var(--tx-2); font-size: .75rem; }
+.motion-toggle { min-height: 40px; padding: .45rem .75rem; border: 1px solid var(--line-3); border-radius: var(--radius); color: var(--tx); font-size: .8125rem; }
+.motion-toggle:hover { border-color: var(--cyan); }
+.motion-toggle[hidden] { display: none; }
+.hero__system { margin-top: 1rem; border: 1px solid var(--line-2); border-radius: var(--radius-lg); background: var(--bg-alt); overflow: hidden; }
+.hero__system summary { padding: 1rem 1.2rem; min-height: 48px; cursor: pointer; color: var(--tx-2); font-size: .875rem; }
+.hero__system .hero__figure { border: 0; border-radius: 0; }
+.card { border-radius: var(--radius-lg); }
+.contact { grid-template-columns: minmax(0, 1fr); max-width: 58rem; }
+.contact__panel { background: linear-gradient(125deg, var(--surface-3), var(--surface)); padding: clamp(1.4rem, 4vw, 3rem); }
+.contact__actions .btn { min-height: 44px; }
+.nav__cta { white-space: nowrap; }
+@keyframes drone-hover {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  30% { transform: translateY(-12px) rotate(-1.5deg); }
+  65% { transform: translateY(-6px) rotate(1deg); }
+}
+@media (max-width: 960px) {
+  .hero__grid { grid-template-columns: minmax(0, 1fr); }
+  .hero__visual { width: 100%; max-width: 42rem; margin-inline: auto; }
+}
+@media (max-width: 480px) {
+  .hero__status { border-radius: var(--radius); font-size: .75rem; }
+  .drone-scene { border-radius: var(--radius-lg); }
+  .drone-scene__heading, .drone-scene__caption { padding-inline: 1rem; }
+  .contact__actions .btn { width: 100%; justify-content: center; white-space: normal; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .drone-scene__aircraft { animation: none !important; }
+  .motion-toggle { display: none; }
+}
 
 @media print {
   .header,
